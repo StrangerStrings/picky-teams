@@ -1,10 +1,7 @@
 <script setup lang="ts">
-defineProps({
-  color: {
-    type: String,
-    required: true
-  }
-})
+defineProps<{
+  color: string
+}>()
 </script>
 
 <template>
@@ -13,8 +10,8 @@ defineProps({
 
 <style scoped>
 .color-block {
-  width: 60px;
-  height: 610px;
+  width: 80px;
+  height: 80px;
   box-sizing: border-box;
 }
 </style>
