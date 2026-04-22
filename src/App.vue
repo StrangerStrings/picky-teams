@@ -14,16 +14,6 @@ const players = ref<Player[]>([
   { name: 'Sami'}
 ])
 
-const showAddPlayer = ref(false);
-
-function openAddPlayer() {
-  showAddPlayer.value = true
-}
-
-function closeAddPlayer() {
-  showAddPlayer.value = false
-}
-
 function moveUp(index: number) {
   if (index <= 0) return
 
@@ -69,8 +59,6 @@ function addPlayer(name: string) {
   players.value.push({
     name: name.trim()
   })
-
-  closeAddPlayer();
 }
 </script>
 
@@ -90,16 +78,10 @@ function addPlayer(name: string) {
           @delete="removePlayer(idx)"
         />
       </div>
+      <AddPlayer
+        @add="addPlayer"
+      ></AddPlayer>
     </div>
-    <button 
-      v-if="!showAddPlayer"
-      @click="openAddPlayer"
-    >Add Player</button>
-    <AddPlayer
-      v-if="showAddPlayer"
-      @add="addPlayer"
-      @cancel="closeAddPlayer"
-    ></AddPlayer>
     <!-- <ColouringBlocks></ColouringBlocks> -->
   </div>
 </template>
@@ -131,13 +113,15 @@ function addPlayer(name: string) {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  align-self: center;
+  width: 400px;
 }
 
 .player-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  width: 400px;
+  gap: 10px;
+  margin: 15px 0;
 }
 </style>

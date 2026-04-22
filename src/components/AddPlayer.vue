@@ -8,42 +8,80 @@ const emit = defineEmits<{
   (e: 'cancel'): void
 }>()
 
+
+const showAddPlayer = ref(false);
+
+function openAddPlayer() {
+  showAddPlayer.value = true
+}
+
+function closeAddPlayer() {
+  showAddPlayer.value = false
+}
+
+
 function handleAdd() {
   const trimmed = name.value.trim()
   if (!trimmed) return
   emit('add', trimmed)
   name.value = ''
+
+  closeAddPlayer();
 }
 </script>
 
 <template>
-  <div class="add-player">
+  <div class="open-add-player"
+    v-if="!showAddPlayer">
+    <div class="button"
+      @click="openAddPlayer"
+      >Add Player</div>
+  </div>
+  <div class="add-player"
+    v-if="showAddPlayer">
     <input
       v-model="name"
       type="text"
       placeholder="Player name"
       @keyup.enter="handleAdd"
     />
-
     <div class="actions">
-      <button @click="emit('cancel')">Cancel</button>
-      <button @click="handleAdd">Add</button>
+      <div class="button" @click="closeAddPlayer">Cancel</div>
+      <div class="button" @click="handleAdd">Add</div>
     </div>
   </div>
 </template>
 
 <style scoped>
+
+.open-add-player {
+  display: flex;
+  justify-content: right;
+  padding: 12px;
+}
 .add-player {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 12px;
 }
-
+.button {
+  color: #d4d8dc;
+  background: #5C646B;
+  padding: 2px 12px;
+  border-radius: 8px 0 8px 0;
+  font-family: 'Oxanium';
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
 input {
+background: #d4d8dc;;
   padding: 8px;
   border: 2px solid #5F676F;
-  border-radius: 8px;
+  border-radius: 16px 0 16px 0;
+  font-size: 19px;
+  color: #4E565E;
+  font-family: 'Oxanium', sans-serif;
   outline: none;
 }
 
