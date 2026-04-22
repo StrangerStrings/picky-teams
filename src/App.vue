@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import PlayerCard from './components/PlayerCard.vue'
+import ColouringBlocks from './components/ColouringBlocks.vue'
+import AddPlayer from './components/AddPlayer.vue'
 import { ref } from 'vue'
 
 type Player = {
@@ -11,6 +13,16 @@ const players = ref<Player[]>([
   { name: 'Joe'},
   { name: 'Sami'}
 ])
+
+const showAddPlayer = ref(false);
+
+function openAddPlayer() {
+  showAddPlayer.value = true
+}
+
+function closeAddPlayer() {
+  showAddPlayer.value = false
+}
 
 function moveUp(index: number) {
   if (index <= 0) return
@@ -39,13 +51,32 @@ function moveDown(index: number) {
 function removePlayer(index: number) {
   players.value.splice(index, 1)
 }
+
+  
+function addPlayer(name: string) {
+  const normalized = name.trim().toLowerCase()
+
+  // duplicate check (case-insensitive)
+  const exists = players.value.some(
+    p => p.name.trim().toLowerCase() === normalized
+  )
+
+  if (exists) {
+    console.warn('Player already exists')
+    return
+  }
+
+  players.value.push({
+    name: name.trim()
+  })
+
+  closeAddPlayer();
+}
 </script>
 
 <template>
-    <div class="layout">
-      <header class="title">
-      Picky Teams
-    </header>
+  <div class="layout">
+    <header class="title">Picky Teams</header>
 
     <div class="content">
       <div class="player-list">
@@ -56,10 +87,20 @@ function removePlayer(index: number) {
           :position="idx + 1"
           @move-up="moveUp(idx)"
           @move-down="moveDown(idx)"
-          @delete="removePlayer"
+          @delete="removePlayer(idx)"
         />
       </div>
     </div>
+    <button 
+      v-if="!showAddPlayer"
+      @click="openAddPlayer"
+    >Add Player</button>
+    <AddPlayer
+      v-if="showAddPlayer"
+      @add="addPlayer"
+      @cancel="closeAddPlayer"
+    ></AddPlayer>
+    <!-- <ColouringBlocks></ColouringBlocks> -->
   </div>
 </template>
 
@@ -78,7 +119,7 @@ function removePlayer(index: number) {
   background: #A3A9AF;
   font-family: 'Orbitron', sans-serif;
   font-size: 40px;
-  color: #5C646B;
+  color: #4E565E;
   font-weight: 700;
   letter-spacing: 0.05em;
   transform: skewX(-12deg);
