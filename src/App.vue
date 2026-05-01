@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import draggable from 'vuedraggable'
 import PlayerCard from './components/PlayerCard.vue'
 import ColouringBlocks from './components/ColouringBlocks.vue'
 import AddPlayer from './components/AddPlayer.vue'
@@ -9,9 +10,16 @@ type Player = {
 }
 
 const players = ref<Player[]>([
-  { name: 'Ben'},
+  { name: 'Alex'},
+  { name: 'Ollie'},
+  { name: 'Adam'},
+  { name: 'Sandhu'},
+  { name: 'Shaan'},
+  { name: 'Jordan'},
   { name: 'Joe'},
-  { name: 'Sami'}
+  { name: 'Ben'},
+  { name: 'Tom Grant'},
+  { name: 'Sami'},
 ])
 
 function moveUp(index: number) {
@@ -64,20 +72,30 @@ function addPlayer(name: string) {
 
 <template>
   <div class="layout">
+    <header>
+      <h1>Picky Teams</h1>
     <header class="title">Picky Teams</header>
+    </header>
 
     <div class="content">
-      <div class="player-list">
-        <PlayerCard
-          v-for="(person, idx) in players"
-          :key="person.name"
-          :name="person.name"
-          :position="idx + 1"
-          @move-up="moveUp(idx)"
-          @move-down="moveDown(idx)"
-          @delete="removePlayer(idx)"
-        />
-      </div>
+      <draggable
+        v-model="players"
+        item-key="name"
+        class="player-list"
+        ghost-class="ghost"
+        animation="200"
+        direction="vertical"
+        drag-class="dragging"
+        handle=".handle"
+      >
+        <template #item="{ element, index }">
+          <PlayerCard
+            :name="element.name"
+            :position="index + 1"
+            @delete="removePlayer(index)"
+          />
+        </template>
+      </draggable>
       <AddPlayer
         @add="addPlayer"
       ></AddPlayer>
@@ -95,8 +113,15 @@ function addPlayer(name: string) {
   flex-direction: column;
 }
 
-.title {
+header {
   flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
   font-weight: bold;
   background: #A3A9AF;
   font-family: 'Orbitron', sans-serif;
@@ -123,5 +148,9 @@ function addPlayer(name: string) {
   flex-direction: column;
   gap: 10px;
   margin: 15px 0;
+}
+
+.ghost {
+  opacity: 0;
 }
 </style>

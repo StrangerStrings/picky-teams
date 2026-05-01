@@ -1,12 +1,11 @@
 <script setup lang="ts">
 
-
 defineProps<{
   name: string
   position: number
-}>()
+}>();
 
-const emit = defineEmits(['move-up', 'move-down', 'delete'])
+const emit = defineEmits(['delete']);
 </script>
 
 <template>
@@ -14,8 +13,16 @@ const emit = defineEmits(['move-up', 'move-down', 'delete'])
     <div class="position">{{ position }}</div>
     <div class="card">
       <div class="name">{{ name }}</div>
-      <div class="arrow" @click="emit('move-up')">↑</div>
-      <div class="arrow" @click="emit('move-down')">↓</div>
+      <div class="handle">
+      <svg width="20" height="20" viewBox="0 0 24 24">
+        <circle cx="9" cy="5" r="2.1"/>
+        <circle cx="15" cy="5" r="2.1"/>
+        <circle cx="9" cy="12" r="2.1"/>
+        <circle cx="15" cy="12" r="2.1"/>
+        <circle cx="9" cy="19" r="2.1"/>
+        <circle cx="15" cy="19" r="2.1"/>
+      </svg>
+</div>
     </div>
     <div class="delete" @click="emit('delete')">x</div>
   </div>
@@ -29,7 +36,7 @@ const emit = defineEmits(['move-up', 'move-down', 'delete'])
   flex-direction: row;
   gap: 5px;
   align-items: center;
-  color: #4E565E;;
+  color: #4E565E;
   font-family: 'Oxanium', sans-serif;
 
 }
@@ -47,7 +54,7 @@ const emit = defineEmits(['move-up', 'move-down', 'delete'])
   display: flex;
   gap: 1px;
   align-items: center;
-  padding: 5px 10px 3px 15px;
+  padding: 5px 5px 3px 15px;
   background: #B0B6BB;
   border: 2px solid #5C646B;
   border-radius: 16px 0 16px 0;
@@ -62,10 +69,17 @@ const emit = defineEmits(['move-up', 'move-down', 'delete'])
   font-size: 19px;
 }
 
-.arrow {
-  cursor: pointer;
-  font-weight: bold;
-  padding: 0 2px;
+.handle { 
+  cursor: grab; 
+  padding: 1px 5px;
+}
+
+.handle:active { 
+  cursor: grabbing; 
+}
+
+.handle svg {
+  fill: #4E565E;
 }
 
 .delete {
@@ -77,6 +91,11 @@ const emit = defineEmits(['move-up', 'move-down', 'delete'])
 
 .player:hover .delete {
   visibility: visible;
+}
+
+:global(.dragging .position),
+:global(.dragging .delete) {
+  opacity: 0;
 }
 
 .fonts {

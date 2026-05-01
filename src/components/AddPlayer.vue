@@ -65,15 +65,7 @@ function handleAdd() {
   gap: 8px;
   padding: 12px;
 }
-.button {
-  color: #d4d8dc;
-  background: #5C646B;
-  padding: 2px 12px;
-  border-radius: 8px 0 8px 0;
-  font-family: 'Oxanium';
-  letter-spacing: 1.5px;
-  cursor: pointer;
-}
+
 input {
 background: #d4d8dc;;
   padding: 8px;
