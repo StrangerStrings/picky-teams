@@ -26,6 +26,7 @@ button {
   min-width: 80px;
   text-align: center;
   border: none;
+  font-size: 14px;
 }
 
 button[disabled] {
