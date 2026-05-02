@@ -15,7 +15,7 @@ a,
   padding: 3px;
 }
 
-.button {
+button {
   color: #d4d8dc;
   background: #5C646B;
   padding: 2px 12px;
@@ -23,6 +23,14 @@ a,
   font-family: 'Oxanium';
   letter-spacing: 1.5px;
   cursor: pointer;
+  min-width: 80px;
+  text-align: center;
+  border: none;
+}
+
+button[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 @media (hover: hover) {
@@ -31,15 +39,4 @@ a,
   }
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-}

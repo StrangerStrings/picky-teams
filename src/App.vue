@@ -1,46 +1,22 @@
 <script setup lang="ts">
-import draggable from 'vuedraggable'
-import PlayerCard from './components/PlayerCard.vue'
-import AddPlayer from './components/AddPlayer.vue'
+import PlayerOrdering from './pages/PlayerOrdering.vue'
+import TeamLists from './pages/TeamLists.vue'
 import { ref } from 'vue'
+import { pickBalancedTeams } from './logic/PickBalancedTeams';
+import type { Player } from './types/Player';
+import { examplePlayers } from './data/examplePlayers';
 
-type Player = {
-  name: string
+const players = ref<Player[]>(examplePlayers)
+const someBool = ref(true);
+
+
+function pickTeams()  {
+  someBool.value = false;
+  players.value = pickBalancedTeams(players.value);
 }
 
-const players = ref<Player[]>([
-  { name: 'Alex'},
-  { name: 'Ollie'},
-  { name: 'Adam'},
-  { name: 'Sandhu'},
-  { name: 'Shaan'},
-  { name: 'Jordan'},
-  { name: 'Joe'},
-  { name: 'Ben'},
-  { name: 'Tom Grant'},
-  { name: 'Sami'},
-])
-
-function removePlayer(index: number) {
-  players.value.splice(index, 1)
-}
-  
-function addPlayer(name: string) {
-  const normalized = name.trim().toLowerCase()
-
-  // duplicate check (case-insensitive)
-  const exists = players.value.some(
-    p => p.name.trim().toLowerCase() === normalized
-  )
-
-  if (exists) {
-    console.warn('Player already exists')
-    return
-  }
-
-  players.value.push({
-    name: name.trim()
-  })
+function back() {
+  someBool.value = true;
 }
 
 </script>
@@ -49,38 +25,28 @@ function addPlayer(name: string) {
   <div class="layout">
     <header>
       <h1>Picky Teams</h1>
+      <button
+        v-if="someBool" 
+        :disabled="players.length%2 !== 0"
+        @click="pickTeams"
+      >Pick</button>
+      <button
+        v-else
+        @click="back"
+      >Back</button>
     </header>
-
-    <div class="content">
-      <draggable
-        v-model="players"
-        item-key="name"
-        class="player-list"
-        ghost-class="ghost"
-        animation="200"
-        direction="vertical"
-        drag-class="dragging"
-        handle=".handle"
-      >
-        <template #item="{ element, index }">
-          <PlayerCard
-            :name="element.name"
-            :position="index + 1"
-            @delete="removePlayer(index)"
-          />
-        </template>
-      </draggable>
-      <AddPlayer
-        @add="addPlayer"
-      ></AddPlayer>
-    </div>
-    <!-- <ColouringBlocks></ColouringBlocks> -->
+    <PlayerOrdering
+      v-if="someBool"
+      v-model="players" 
+    />
+    <TeamLists 
+      v-else
+      :players="players" 
+    />
   </div>
 </template>
 
-
 <style scoped>
-
 .layout {
   height: 100vh;
   display: flex;
@@ -95,7 +61,7 @@ header {
   align-items: center;
 }
 
-header h1 {
+h1 {
   font-weight: bold;
   background: #A3A9AF;
   font-family: 'Orbitron', sans-serif;
@@ -106,25 +72,9 @@ header h1 {
   transform: skewX(-12deg);
 }
 
-.content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-  align-self: center;
-  width: 400px;
-}
-
-.player-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 15px 0;
-}
-
-.ghost {
-  opacity: 0;
+@media (max-width: 450px) {
+  h1 {
+    font-size: 22px;
+  }
 }
 </style>

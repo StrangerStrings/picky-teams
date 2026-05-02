@@ -3,28 +3,34 @@
 defineProps<{
   name: string
   position: number
+  editable: boolean
 }>();
 
 const emit = defineEmits(['delete']);
+
 </script>
 
 <template>
   <div class="player">
-    <div class="position">{{ position }}</div>
+    <div v-if="editable" class="position">{{ position }}</div>
     <div class="card">
       <div class="name">{{ name }}</div>
-      <div class="handle">
-      <svg width="20" height="20" viewBox="0 0 24 24">
-        <circle cx="9" cy="5" r="2.1"/>
-        <circle cx="15" cy="5" r="2.1"/>
-        <circle cx="9" cy="12" r="2.1"/>
-        <circle cx="15" cy="12" r="2.1"/>
-        <circle cx="9" cy="19" r="2.1"/>
-        <circle cx="15" cy="19" r="2.1"/>
-      </svg>
-</div>
+      <div v-if="editable"class="handle">
+        <svg width="20" height="20" viewBox="0 0 24 24">
+          <circle cx="9" cy="5" r="2.1"/>
+          <circle cx="15" cy="5" r="2.1"/>
+          <circle cx="9" cy="12" r="2.1"/>
+          <circle cx="15" cy="12" r="2.1"/>
+          <circle cx="9" cy="19" r="2.1"/>
+          <circle cx="15" cy="19" r="2.1"/>
+        </svg>
+      </div>
     </div>
-    <div class="delete" @click="emit('delete')">x</div>
+    <div 
+      v-if="editable"
+      class="delete" 
+      @click="emit('delete')"
+    >x</div>
   </div>
 </template>
 

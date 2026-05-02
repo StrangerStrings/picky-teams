@@ -33,9 +33,9 @@ function handleAdd() {
 <template>
   <div class="open-add-player"
     v-if="!showAddPlayer">
-    <div class="button"
+    <button
       @click="openAddPlayer"
-      >Add Player</div>
+      >Add Player</button>
   </div>
   <div class="add-player"
     v-if="showAddPlayer">
@@ -46,8 +46,8 @@ function handleAdd() {
       @keyup.enter="handleAdd"
     />
     <div class="actions">
-      <div class="button" @click="closeAddPlayer">Cancel</div>
-      <div class="button" @click="handleAdd">Add</div>
+      <button @click="closeAddPlayer">Cancel</button>
+      <button @click="handleAdd">Add</button>
     </div>
   </div>
 </template>
@@ -67,8 +67,8 @@ function handleAdd() {
 }
 
 input {
-background: #d4d8dc;;
-  padding: 8px;
+  background: #d4d8dc;;
+  padding: 8px 12px;
   border: 2px solid #5F676F;
   border-radius: 16px 0 16px 0;
   font-size: 19px;
