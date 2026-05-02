@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import draggable from 'vuedraggable'
 import PlayerCard from './components/PlayerCard.vue'
-import ColouringBlocks from './components/ColouringBlocks.vue'
 import AddPlayer from './components/AddPlayer.vue'
 import { ref } from 'vue'
 
@@ -22,34 +21,9 @@ const players = ref<Player[]>([
   { name: 'Sami'},
 ])
 
-function moveUp(index: number) {
-  if (index <= 0) return
-
-  const prev = players.value[index - 1]
-  const curr = players.value[index]
-
-  if (!prev || !curr) return
-
-  players.value[index - 1] = curr
-  players.value[index] = prev
-}
-
-function moveDown(index: number) {
-  if (index >= players.value.length - 1) return
-
-  const curr = players.value[index]
-  const next = players.value[index + 1]
-
-  if (!curr || !next) return
-
-  players.value[index] = next
-  players.value[index + 1] = curr
-}
-
 function removePlayer(index: number) {
   players.value.splice(index, 1)
 }
-
   
 function addPlayer(name: string) {
   const normalized = name.trim().toLowerCase()
@@ -68,13 +42,13 @@ function addPlayer(name: string) {
     name: name.trim()
   })
 }
+
 </script>
 
 <template>
   <div class="layout">
     <header>
       <h1>Picky Teams</h1>
-    <header class="title">Picky Teams</header>
     </header>
 
     <div class="content">
